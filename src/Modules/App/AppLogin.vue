@@ -26,6 +26,7 @@ export default {
 
   methods: {
     login() {
+      let self = this
       this.formSubmitted = true
       console.log('logged in')
       this.$v.$touch()
@@ -34,7 +35,12 @@ export default {
         console.log('invalid')
       } else {
         this.loading = true
-        this.$axios
+        setTimeout(() => {
+          self.loading = false
+          localStorage.setItem('easiiUser', 'root')
+          self.$router.push('/')
+        }, 2000)
+        /* this.$axios
           .get('/users')
           .then(res => {
             console.log(res.data)
@@ -48,7 +54,7 @@ export default {
             })
             console.log(err)
             this.loading = false
-          })
+          }) */
       }
     },
 
@@ -73,7 +79,9 @@ export default {
     >
       <h2 class="login-title">Easii</h2>
       <el-input
+        size="large"
         class="login-input"
+        :validate-event="true"
         placeholder="Username"
         :value="username"
         @input="setUsername"
@@ -88,6 +96,7 @@ export default {
         <div class="error" v-if="!$v.username.required">Name is required</div>
       </div>
       <el-input
+        size="large"
         class="login-input"
         placeholder="Password"
         type="password"
@@ -138,11 +147,29 @@ export default {
   &-title {
     font-size: 1.3rem;
     padding-top: 1rem;
-    padding-bottom: 3rem;
+    padding-bottom: 2rem;
   }
 
   &-input {
-    margin-bottom: 1rem;
+    margin-top: 1rem;
+
+    &.invalid {
+      & .el-input__inner {
+        border-color: #f56c6c;
+      }
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &-errors {
+      text-align: left;
+      padding-top: 0.3rem;
+      padding-left: 0.5rem;
+      color: #f56c6c;
+      font-size: 0.9rem;
+    }
 
     &__icon {
       font-size: 1.2rem;
