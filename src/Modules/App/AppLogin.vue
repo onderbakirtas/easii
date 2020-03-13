@@ -1,6 +1,4 @@
 <script>
-import { required, minLength } from 'vuelidate/lib/validators'
-
 export default {
   name: 'AppLogin',
 
@@ -9,61 +7,62 @@ export default {
       username: '',
       password: '',
       loading: false,
-      formSubmitted: false
-    }
-  },
+      formSubmitted: false,
 
-  validations: {
-    username: {
-      required,
-      minLength: minLength(4)
-    },
+      formData: {
+        username: ''
+      },
 
-    password: {
-      required
+      rules: {
+        username: [
+          {
+            required: true,
+            message: 'Username cannot be blank',
+            trigger: 'blur'
+          }
+          /* {
+            min: 3,
+            max: 16,
+            message: 'Username must be 3-16 letters long',
+            trigger: 'blur'
+          } */
+        ],
+
+        password: [
+          {
+            required: true,
+            message: 'Password cannot be blank',
+            trigger: 'blur'
+          }
+          /* {
+            min: 3,
+            max: 16,
+            message: 'Password must be 3-16 letters long',
+            trigger: 'blur'
+          } */
+        ]
+      }
     }
   },
 
   methods: {
-    login() {
+    onSubmit(formName) {
       let self = this
-      this.formSubmitted = true
-      console.log('logged in')
-      this.$v.$touch()
-
-      if (this.$v.$invalid) {
-        console.log('invalid')
-      } else {
-        this.loading = true
-        setTimeout(() => {
+      self.loading = true
+      self.$refs[formName].validate(valid => {
+        if (valid) {
+          alert('submit!')
+          setTimeout(() => {
+            self.loading = false
+            localStorage.setItem('easiiUser', 'root')
+            self.$router.push('/')
+          }, 2000)
+        } else {
           self.loading = false
-          localStorage.setItem('easiiUser', 'root')
-          self.$router.push('/')
-        }, 2000)
-        /* this.$axios
-          .get('/users')
-          .then(res => {
-            console.log(res.data)
-            this.loading = false
-          })
-          .catch(err => {
-            this.$message.error({
-              message: this.$responseMessage(1),
-              duration: 10000,
-              showClose: true
-            })
-            console.log(err)
-            this.loading = false
-          }) */
-      }
-    },
-
-    setUsername(val) {
-      this.username = val
-    },
-
-    setPassword(val) {
-      this.password = val
+          console.log('error submit!!')
+          return false
+        }
+      })
     }
   }
 }
@@ -71,53 +70,33 @@ export default {
 
 <template>
   <div class="app-login">
-    <form
+    <el-form
       class="login"
-      @submit.prevent="login"
+      :model="formData"
+      ref="login"
+      :rules="rules"
       v-loading="loading"
-      autocomplete="off"
     >
       <h2 class="login-title">Easii</h2>
-      <el-input
-        size="large"
-        class="login-input"
-        :validate-event="true"
-        placeholder="Username"
-        :value="username"
-        @input="setUsername"
-        autocomplete="off"
-      >
-        <i
-          slot="prefix"
-          class="login-input__icon el-input__icon el-icon-user"
-        ></i>
-      </el-input>
-      <div class="login-input-errors" v-if="formSubmitted">
-        <div class="error" v-if="!$v.username.required">Name is required</div>
-      </div>
-      <el-input
-        size="large"
-        class="login-input"
-        placeholder="Password"
-        type="password"
-        :value="password"
-        @input="setPassword"
-        autocomplete="off"
-      >
-        <i
-          slot="prefix"
-          class="login-input__icon el-input__icon el-icon-unlock"
-        ></i>
-      </el-input>
-      <div class="login-input-errors" v-if="formSubmitted">
-        <div class="error" v-if="!$v.password.required">
-          Password is required
-        </div>
-      </div>
-      <el-button class="login-submit" type="primary" native-type="submit"
-        >Login</el-button
-      >
-    </form>
+      <el-form-item prop="username">
+        <el-input v-model="formData.username" placeholder="Username">
+          <i slot="prefix" class="el-input__icon el-icon-user"></i
+        ></el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input
+          v-model="formData.password"
+          placeholder="Password"
+          type="password"
+        >
+          <i slot="prefix" class="el-input__icon el-icon-unlock"></i
+        ></el-input>
+      </el-form-item>
+      <el-form-item class="login-buttons">
+        <el-button type="primary" @click="onSubmit('login')">Login</el-button>
+        <el-button>Clear</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -148,6 +127,10 @@ export default {
     font-size: 1.3rem;
     padding-top: 1rem;
     padding-bottom: 2rem;
+  }
+
+  &-buttons {
+    padding-top: 1rem;
   }
 
   &-input {

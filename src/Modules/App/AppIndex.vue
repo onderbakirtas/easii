@@ -16,7 +16,7 @@ export default {
 <template>
   <el-container style="height: 100%; border: 1px solid #eee">
     <el-aside width="300px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-openeds="['1', '3']" :router="true">
+      <el-menu :default-openeds="['2']" :router="true">
         <el-submenu index="1">
           <template slot="title"
             ><i class="el-icon-message"></i>Navigator One</template
@@ -39,12 +39,12 @@ export default {
           </el-submenu>
         </el-submenu>
         <el-submenu index="2">
-          <template slot="title"
-            ><i class="el-icon-menu"></i>Navigator Two</template
-          >
+          <template slot="title"><i class="el-icon-menu"></i>Articles</template>
           <el-menu-item-group>
             <template slot="title">Group 1</template>
-            <el-menu-item index="2-1">Option 1</el-menu-item>
+            <el-menu-item :route="{ name: 'ArticlePosts' }" index="2-1"
+              >Posts</el-menu-item
+            >
             <el-menu-item index="2-2">Option 2</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group title="Group 2">
@@ -76,7 +76,7 @@ export default {
     </el-aside>
 
     <el-container>
-      <router-view name="panel" />
+      <router-view />
     </el-container>
   </el-container>
 </template>

@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AppRoutes from '../Modules/App/routes'
+import ArticleRoutes from '../Modules/Article/routes'
 
 Vue.use(VueRouter)
 
 const routes = [
   ...AppRoutes,
+  ...ArticleRoutes,
   {
     path: '/about',
     name: 'About',
