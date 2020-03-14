@@ -15,8 +15,12 @@ export default {
 
 <template>
   <el-container style="height: 100%; border: 1px solid #eee">
-    <el-aside width="300px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-openeds="['2']" :router="true">
+    <el-aside width="300px">
+      <el-menu :router="true" class="app-sidebar">
+        <el-menu-item :index="1"
+          ><i class="el-icon-s-home"></i>Genel Bakış</el-menu-item
+        >
+
         <el-submenu index="1">
           <template slot="title"
             ><i class="el-icon-message"></i>Navigator One</template
@@ -73,15 +77,18 @@ export default {
           </el-submenu>
         </el-submenu>
       </el-menu>
+      <el-footer class="app-sidebar-footer">
+        Easii
+      </el-footer>
     </el-aside>
 
-    <el-container>
-      <router-view> </router-view>
+    <el-container class="app-container">
+      <router-view class="app-content"> </router-view>
     </el-container>
   </el-container>
 </template>
 
-<style>
+<style lang="scss">
 .el-header {
   background-color: #b3c0d1;
   color: #333;
@@ -90,5 +97,39 @@ export default {
 
 .el-aside {
   color: #333;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+.app-sidebar {
+  flex-basis: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.app-sidebar-footer {
+  font-family: 'Sen', sans-serif;
+  font-size: 1.5rem;
+  flex-basis: 4rem;
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: #909399;
+  letter-spacing: -0.1rem;
+
+  &:hover {
+    transition: 0.2s;
+    color: #409eff;
+  }
+}
+
+.app-container {
+  background: #f5f7fa;
+}
+
+.app-content {
+  width: 100%;
 }
 </style>
