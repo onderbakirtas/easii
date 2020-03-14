@@ -29,8 +29,16 @@ Vue.prototype.$responseMessage = function(code) {
 
 router.beforeEach((to, from, next) => {
   let isAuthenticated = localStorage.getItem('easiiUser') !== null
-  if (to.name !== 'AppLogin' && !isAuthenticated) next({ name: 'AppLogin' })
-  else next()
+  console.log('to: ', to)
+  console.log('auth: ', isAuthenticated)
+  if (to.name !== 'AppLogin' && !isAuthenticated) {
+    console.log('not auth')
+    next({ name: 'AppLogin' })
+  } else if (to.name === 'AppLogin' && isAuthenticated) {
+    next({ name: 'AppIndex' })
+  } else {
+    next()
+  }
 })
 
 new Vue({

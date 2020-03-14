@@ -1,16 +1,26 @@
+import AppIndex from './AppIndex'
+import AppLogin from './AppLogin'
+
 export default [
   {
-    name: 'AppLogin',
-    path: '/login',
-    component: () => import('./AppLogin'),
-    meta: {
-      title: 'Giris',
-      requireAuth: false
-    }
-  },
-  {
-    name: 'AppIndex',
     path: '/',
+    name: 'AppIndex',
+    component: AppIndex,
+    children: [
+      {
+        name: 'AppLogin',
+        path: 'login',
+        component: AppLogin,
+        meta: {
+          title: 'Giris',
+          requireAuth: false
+        }
+      }
+    ]
+  }
+  /* {
+    name: 'AppIndex',
+    path: '/app',
     component: () => import('./AppIndex'),
     meta: {
       title: 'Panel',
@@ -18,12 +28,12 @@ export default [
     },
     children: [
       {
-        path: '/user',
+        path: 'user',
         name: 'UserIndex',
         components: {
           panel: () => import('../User/UserIndex')
         }
       }
     ]
-  }
+  } */
 ]

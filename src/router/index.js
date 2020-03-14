@@ -5,9 +5,10 @@ import ArticleRoutes from '../Modules/Article/routes'
 
 Vue.use(VueRouter)
 
+AppRoutes[0].children.push(...ArticleRoutes)
+
 const routes = [
   ...AppRoutes,
-  ...ArticleRoutes,
   {
     path: '/about',
     name: 'About',
