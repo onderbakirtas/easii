@@ -7,7 +7,9 @@ export default {
       address: 'No. 189, Grove St, Los Angeles'
     }
     return {
-      tableData: Array(20).fill(item)
+      tableData: Array(20).fill(item),
+      avatarSrc:
+        'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
     }
   }
 }
@@ -16,8 +18,19 @@ export default {
 <template>
   <el-container style="height: 100%; border: 1px solid #eee">
     <el-aside width="300px">
+      <el-header height="100">
+        <div class="app-userbox">
+          <el-avatar :size="56" :src="avatarSrc"> </el-avatar>
+          <div class="app-userbox-info">
+            <span class="app-userbox-info--name">Celil Durmuş</span>
+            <span class="app-userbox-info--role">Süper Yönetici</span>
+            <span class="app-userbox-info--org">Easii</span>
+          </div>
+        </div>
+      </el-header>
+
       <el-menu :router="true" class="app-sidebar">
-        <el-menu-item :index="1"
+        <el-menu-item index="1"
           ><i class="el-icon-s-home"></i>Genel Bakış</el-menu-item
         >
 
@@ -49,7 +62,9 @@ export default {
             <el-menu-item :route="{ name: 'ArticlePosts' }" index="2-1"
               >Posts</el-menu-item
             >
-            <el-menu-item index="2-2">Option 2</el-menu-item>
+            <el-menu-item :route="{ name: 'ArticleCustom' }" index="2-2"
+              >Custom Table</el-menu-item
+            >
           </el-menu-item-group>
           <el-menu-item-group title="Group 2">
             <el-menu-item index="2-3">Option 3</el-menu-item>
@@ -89,9 +104,41 @@ export default {
 </template>
 
 <style lang="scss">
+.app {
+  &-userbox {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+      margin-left: 0.5rem;
+
+      &--name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #606266;
+      }
+
+      &--role {
+        margin-top: 0.2rem;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: #909399;
+      }
+
+      &--org {
+        margin-top: 0.2rem;
+        font-size: 0.8rem;
+        color: #606266;
+      }
+    }
+  }
+}
 .el-header {
-  background-color: #b3c0d1;
-  color: #333;
   line-height: 60px;
 }
 
@@ -100,12 +147,17 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  border-right: solid 1px #e6e6e6;
+}
+
+.el-menu {
+  border: none;
 }
 
 .app-sidebar {
   flex-basis: auto;
-  flex-grow: 1;
-  flex-shrink: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 .app-sidebar-footer {
@@ -118,6 +170,7 @@ export default {
   align-items: center;
   color: #909399;
   letter-spacing: -0.1rem;
+  cursor: default;
 
   &:hover {
     transition: 0.2s;
@@ -126,6 +179,9 @@ export default {
 }
 
 .app-container {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
   background: #f5f7fa;
 }
 

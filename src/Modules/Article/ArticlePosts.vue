@@ -2,6 +2,14 @@
 export default {
   name: 'ArticlePosts',
 
+  props: {
+    columns: {
+      type: Array,
+      // required: true,
+      default: () => []
+    }
+  },
+
   data() {
     return {
       tableData: [],

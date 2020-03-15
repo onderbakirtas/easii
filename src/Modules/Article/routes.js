@@ -1,5 +1,6 @@
 import ArticleIndex from './ArticleIndex'
 import ArticlePosts from './ArticlePosts'
+import ArticleCustom from './ArticleCustom'
 
 export default [
   {
@@ -15,6 +16,11 @@ export default [
         name: 'ArticlePosts',
         path: 'posts',
         component: ArticlePosts
+      },
+      {
+        name: 'ArticleCustom',
+        path: 'custom',
+        component: ArticleCustom
       }
     ]
   }
