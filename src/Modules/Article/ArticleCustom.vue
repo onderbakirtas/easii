@@ -43,7 +43,10 @@ export default {
           icon: 'el-icon-delete',
           action: 'delete'
         }
-      ]
+      ],
+      currentPage: 1,
+      pageSize: 10,
+      totalNum: null
     }
   },
 
@@ -56,8 +59,13 @@ export default {
       let self = this
       self.loading = true
       setTimeout(() => {
-        fetch('https://jsonplaceholder.typicode.com/posts')
-          .then(res => res.json())
+        fetch(
+          `https://jsonplaceholder.typicode.com/posts?_page=${this.currentPage}&_limit=${this.pageSize}`
+        )
+          .then(res => {
+            this.totalNum = parseInt(res.headers.get('x-total-count'))
+            return res.json()
+          })
           .then(data => {
             self.posts = data
             self.loading = false
@@ -65,7 +73,7 @@ export default {
           .catch(err => {
             console.log('error: ', err)
           })
-      }, 2000)
+      }, 500)
     },
 
     editItem(item) {
@@ -74,20 +82,47 @@ export default {
 
     deleteItem(item) {
       console.log('deleting: ', item)
+    },
+
+    sizeChange() {},
+
+    currentChange(val) {
+      this.currentPage = val
+      this.getPosts()
     }
   }
 }
 </script>
 
 <template>
-  <DataTable
-    :rows="posts"
-    :columns="columns"
-    :operations="operations"
-    @on-edit="editItem"
-    @on-delete="deleteItem"
-    v-loading="loading"
-  />
+  <div class="articles-custom">
+    <DataTable
+      class="articles-table"
+      :rows="posts"
+      :columns="columns"
+      :operations="operations"
+      @on-edit="editItem"
+      @on-delete="deleteItem"
+      v-loading="loading"
+    />
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      @size-change="sizeChange"
+      @current-change="currentChange"
+      :current-page="currentPage"
+      :total="totalNum"
+      :page-size="pageSize"
+      :page-sizes="[10, 20, 50, 'all']"
+    >
+    </el-pagination>
+  </div>
 </template>
 
-<style></style>
+<style lang="scss">
+.articles {
+  &-table {
+    height: 500px;
+  }
+}
+</style>
